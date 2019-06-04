@@ -22,6 +22,42 @@ function longestCommonSubstring(str1, str2) {
   return longest;
 }
 
-// Dynamic programming solution:
+// Dynamic programming solution (from solutions) - O(m x n) space and time complexities:
 
+function makeMatrix(str1, str2) {
+  let matrix = [];
 
+  for (let i = 0; i < str1.length + 1; i++) {
+    matrix[i] = [];
+    for (let j = 0; j < str2.length + 1; j++) {
+      matrix[i][j] = 0;
+    }
+  }
+
+  for (let i = 0; i < str1.length; i++) {
+    for (let j = 0; j < str2.length; j++) {
+      if (str1[i] === str2[j]) {
+        matrix[i + 1][j + 1] = matrix[i][j] + 1;
+      } else {
+        matrix[i + 1][j + 1] = 0;
+      }
+    }
+  }
+
+  return matrix;
+}
+
+function longestCommonSubstring(str1, str2) {
+  let matrix = makeMatrix(str1, str2);
+  longestSubstring = '';
+  
+  for (let i = 0; i < matrix.length; i++) {
+    for (let j = 0; j < matrix[1].length; j++) {
+      if (matrix[i][j] > longestSubstring.length) {
+        longestSubstring = str2.slice(j - matrix[i][j], j);
+      }
+    }
+  }
+
+  return longestSubstring;
+}
